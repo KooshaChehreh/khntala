@@ -33,3 +33,19 @@ class TransactionDone(APIException):
         "code": default_code,
         "message": "تراکنش انجام شده است.",
     }
+
+class SuspendedUser(APIException):
+    status_code = 400
+    default_code = "user_is_suspended"
+    default_detail = {
+        "code": default_code,
+        "message": "کاربر بن شده است.",
+    }
+
+class UserDoesNotExist(APIException):
+    status_code = 400
+    default_code = "user_does_not_exist"
+    default_detail = {
+        "code": default_code,
+        "message": "کاربر وجود ندارد.",
+    }
