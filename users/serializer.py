@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import User
 
 
-class UsersSerializer(serializers.ModelSerializer):
+class  UsersSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
@@ -18,7 +18,6 @@ class UsersSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = [
             "id",
-            "phone",
             "created_at",
             "updated_at",
             "suspended_at",
@@ -35,3 +34,7 @@ class UsersSerializer(serializers.ModelSerializer):
             validated_data["password"] = User.hash_password(raw_password=validated_data["password"])
         user = super().update(instance=instance, validated_data=validated_data)
         return user
+    
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
