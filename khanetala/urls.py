@@ -16,7 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from users.views import *
+from transaction.views import *
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("users/login/verify-password", login_verify_password, name="login-verify-password"),
+    path("users/sign-up", create_user, name="sign-up"),
+    path("transactions/buy", buy, name="buy-transaction"),
+    path("transactions/sell", sell, name="sell-transaction"),
+    path("transactions/user/", user_transactions, name="user-transactions"),
 ]
