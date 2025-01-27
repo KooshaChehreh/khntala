@@ -30,15 +30,20 @@ def create_user(request):
 
 @api_view(["POST"])
 def login_verify_password(request):
+    print(1)
     serializer = UsersSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     username = serializer.validated_data["username"]
     password = serializer.validated_data["password"]
+    print(username)
     try:
         target_user: User = User.objects.get(username=username)
+        print(2)
         if target_user.is_suspended():
+            print(3)
             raise AccountSuspended
         if not target_user.check_password(entered_password=password):
+            print(4)
             raise InvalidUsernameOrPassword
         access_token = generate_access_token(target_user)
         response_data = {

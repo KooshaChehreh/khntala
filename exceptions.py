@@ -20,10 +20,10 @@ class InvalidUsernameOrPassword(APIException):
 
 class UsernameAlreadyExists(APIException):
     status_code = 400
-    default_code = "invalid_username_or_password"
+    default_code = "username_already_exists"
     default_detail = {
         "code": default_code,
-        "message": "کلمه عبور یا کاربری وارد شده اشتباه است.",
+        "message": "این نام کاربری تکراریست.",
     }
 
 class TransactionDone(APIException):
