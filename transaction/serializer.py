@@ -13,8 +13,9 @@ class TransactionSerializer(serializers.ModelSerializer):
             "user_id",
             "state",
             "transaction_type",
-            "amount",
-            "gold_amount_gr",
+            "amount_rial",
+            "gold_weight_gram",
+            "price_per_gram",
             "note",
             "created_at",
             "updated_at",
@@ -26,15 +27,10 @@ class TransactionSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
 
+class BuyTransactionSerializer(serializers.Serializer):
+    amount_rial = serializers.CharField()
 
-    # def create(self, validated_data):
-    #     validated_data["password"] = Transaction.hash_password(raw_password=validated_data["password"])
-    #     user = super().create(validated_data=validated_data)
-    #     return user
 
-    # def update(self, instance, validated_data):
-    #     if validated_data["password"]:
-    #         validated_data["password"] = Transaction.hash_password(raw_password=validated_data["password"])
-    #     user = super().update(instance=instance, validated_data=validated_data)
-    #     return user
+class SellTransactionSerializer(serializers.Serializer):
+    gold_weight_gram = serializers.CharField()
 

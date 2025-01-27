@@ -49,3 +49,11 @@ class UserDoesNotExist(APIException):
         "code": default_code,
         "message": "کاربر وجود ندارد.",
     }
+
+class UnsufficientBalance(APIException):
+    status_code = 400
+    default_code = "gold_balance_is_not_sufficient"
+    default_detail = {
+        "code": default_code,
+        "message": "مقدار طلای درخواستی بیشتر از موجودی کاربر است.",
+    }
