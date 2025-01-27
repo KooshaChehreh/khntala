@@ -14,11 +14,8 @@ import csv
 from .permissions import IsAuthenticatedWithToken
 from .models import User
 from rest_framework.views import APIView
-from django_elasticsearch_dsl_drf.filter_backends import (
-    FilteringFilterBackend,
-    CompoundSearchFilterBackend,
-    OrderingFilterBackend,
-)
+from transaction.models import Transaction
+from transaction.serializer import TransactionSerializer
         
 @api_view(["POST"])
 def create_user(request):
@@ -51,27 +48,12 @@ def login_verify_password(request):
     except User.DoesNotExist:
         raise InvalidUsernameOrPassword
     
-@api_view(["GET"])
-@permission_classes([IsAuthenticatedWithToken])
-def export_csv(request):
-    queryset = User.objects.all()
-    serializer = UsersSerializer(queryset, many=True)
-    response = HttpResponse(content_type="text/csv")
-    response["Content-Disposition"] = 'attachment; filename="insurances.csv"'
-    writer = csv.writer(response)
-
-    if serializer.data:
-        headers = serializer.data[0].keys()  
-        writer.writerow(headers)
-        for item in serializer.data:
-            writer.writerow(item.values())
-    return response
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticatedWithToken])
-def records_number(request):
-    queryset = User.objects.all().count()
-    User.objects.filter(phone="").update(phone="09356195525")
-    return Response({"Number of Records:": queryset}, status=status.HTTP_200_OK)
+def user_transactions(request):
+    queryset = Transaction.objects.filter(user_id=request.user.id)
+    serializer = TransactionSerializer(queryset, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 

@@ -19,6 +19,7 @@ class User(models.Model):
         validators=[phone_validator],
         verbose_name="تلفن همراه",
     )
+    gold_wight = models.DecimalField(max_digits=12, decimal_places=4, default=0.0)
     password = models.CharField(
         max_length=128,
         blank=True,

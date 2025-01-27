@@ -203,7 +203,7 @@ XwIDAQAB
 JWT_SECRET_KEY = "jdhf$82!kjsdf#23hfd&3rksjdf@94hsdfsd^23jdfgk@42jhdslf_9fksd!"
 JWT_EXPIRATION_SECS = 20 * 60
 
-
+PRICE_PER_GRAM_RIALS = 10000000
 
 
 # LOGGING = {
