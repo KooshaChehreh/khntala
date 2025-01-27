@@ -49,11 +49,6 @@ def login_verify_password(request):
         raise InvalidUsernameOrPassword
     
 
-@api_view(["GET"])
-@permission_classes([IsAuthenticatedWithToken])
-def user_transactions(request):
-    queryset = Transaction.objects.filter(user_id=request.user.id)
-    serializer = TransactionSerializer(queryset, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 
