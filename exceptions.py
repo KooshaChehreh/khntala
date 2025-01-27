@@ -25,3 +25,11 @@ class UsernameAlreadyExists(APIException):
         "code": default_code,
         "message": "کلمه عبور یا کاربری وارد شده اشتباه است.",
     }
+
+class TransactionDone(APIException):
+    status_code = 400
+    default_code = "tranction_done_before"
+    default_detail = {
+        "code": default_code,
+        "message": "تراکنش انجام شده است.",
+    }

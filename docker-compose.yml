@@ -3,9 +3,10 @@ version: '3.9'
 services:
   db:
     image: postgres:latest
-    container_name: postgres-django
+    container_name: postgres-django-khanetala
     environment:
       POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: yourpassword  # Add a password here
       POSTGRES_DB: postgres
     ports:
       - "5432:5432"
@@ -15,17 +16,21 @@ services:
   app:
     build:
       context: .
-    container_name: my_app
+    container_name: khanetala
     environment:
       DB_HOST: db
       DB_PORT: 5432
-      DB_NAME: mydatabase
-      DB_USER: myuser
-      DB_PASSWORD: mypassword
+      DB_NAME: postgres
+      DB_USER: postgres
+      DB_PASSWORD: ''
     ports:
       - "8000:8000"
     depends_on:
       - db
+    command: >
+      sh -c "python manage.py makemigrations &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
 
 volumes:
   postgres_data:
