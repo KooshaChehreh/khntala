@@ -6,6 +6,7 @@ from users.permissions import IsAuthenticatedWithToken
 from rest_framework.decorators import (
     api_view,
     permission_classes,
+    authentication_classes
 )
 from exceptions import *
 from django.db import transaction
@@ -15,30 +16,27 @@ from transaction.serializer import *
 
 
 @api_view(["POST"])
-@permission_classes([IsAuthenticatedWithToken])
 def buy(request):
     serializer = BuyTransactionSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
-    try:
-        user = User.objects.get(id=request.user.id)
-        if user.is_suspended():
-            raise SuspendedUser
-        amount_rial = serializer.validated_data["amount_rial"]
-        gold_weight_gram = amount_rial/settings.PRICE_PER_GRAM_RIALS
-        with transaction.atomic():
-            created_transaction = Transaction.objects.create(
-                user_id=user.id,
-                amount_rial=amount_rial,
-                gold_weight_gram=gold_weight_gram
-            )
-            user.gold_weight = gold_weight_gram
-            user.save()
-        return Response(TransactionSerializer(created_transaction).data, status=status.HTTP_201_CREATED)
-    except User.DoesNotExist:
-        raise UserDoesNotExist
+    user = request.user
+    if user.is_suspended():
+        raise SuspendedUser
+    amount_rial = serializer.validated_data["amount_rial"]
+    gold_weight_gram = amount_rial/settings.PRICE_PER_GRAM_RIALS
+    with transaction.atomic():
+        created_transaction = Transaction.objects.create(
+            user_id=user.id,
+            transaction_type=Transaction.TRANSACTION_TYPE_BUY,
+            amount_rial=amount_rial,
+            gold_weight_gram=gold_weight_gram
+        )
+        user.gold_weight = gold_weight_gram
+        user.save()
+    return Response(TransactionSerializer(created_transaction).data, status=status.HTTP_201_CREATED)
+
 
 @api_view(["POST"])
-@permission_classes([IsAuthenticatedWithToken])
 def sell(request):
     serializer = SellTransactionSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
@@ -53,6 +51,7 @@ def sell(request):
         with transaction.atomic():
             created_transaction = Transaction.objects.create(
                 user_id=user.id,
+                transaction_type=Transaction.TRANSACTION_TYPE_SELL,
                 amount_rial=amount_rial,
                 gold_weight_gram=gold_weight_gram
             )
@@ -64,7 +63,6 @@ def sell(request):
 
 
 @api_view(["GET"])
-@permission_classes([IsAuthenticatedWithToken])
 def user_transactions(request):
     queryset = Transaction.objects.filter(user_id=request.user.id)
     serializer = TransactionSerializer(queryset, many=True)

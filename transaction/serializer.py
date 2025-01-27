@@ -28,9 +28,9 @@ class TransactionSerializer(serializers.ModelSerializer):
         ]
 
 class BuyTransactionSerializer(serializers.Serializer):
-    amount_rial = serializers.CharField()
+    amount_rial = serializers.IntegerField()
 
 
 class SellTransactionSerializer(serializers.Serializer):
-    gold_weight_gram = serializers.CharField()
+    gold_weight_gram = serializers.IntegerField()
 

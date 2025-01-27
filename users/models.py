@@ -9,12 +9,12 @@ from rest_framework.exceptions import AuthenticationFailed
 class User(models.Model):
     username = models.CharField(
         max_length=64,
-        blank=True,
-        null=True,
         unique=True,
         verbose_name="نام کاربری",
     )
     phone = models.CharField(
+        blank=True,
+        null=True,
         max_length=11,
         validators=[phone_validator],
         verbose_name="تلفن همراه",
@@ -64,6 +64,7 @@ class User(models.Model):
                 key=settings.JWT_PUBLIC_KEY,
                 algorithms=["RS256"],
             )
+
         except (jwt.exceptions.DecodeError, jwt.exceptions.DecodeError):
             raise AuthenticationFailed(
                 detail={"message": "Invalid token", "code": "invalid_token"}
@@ -72,6 +73,14 @@ class User(models.Model):
             raise AuthenticationFailed(
                 detail={"message": "Expired token", "code": "token_expired"}
             )
+        user_id = payload.get("id", None)
+        if not user_id:
+            return None
+        try:
+            user = User.objects.get(id=user_id)
+            return user
+        except User.DoesNotExist:
+            return None
         
     def is_suspended(self):
         return self.suspended_at is not None

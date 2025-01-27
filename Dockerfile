@@ -1,6 +1,6 @@
 FROM python:3.13  
 
-RUN mkdir /app
+# RUN mkdir /app
 
 WORKDIR /app
  
@@ -10,12 +10,12 @@ ENV PYTHONUNBUFFERED=1
  
 RUN pip install --upgrade pip 
  
-COPY requirements.txt  /app/
+COPY requirements.txt  /app/requirements.txt
  
 RUN pip install --no-cache-dir -r requirements.txt
  
-COPY . /app/
+COPY . /app
  
 EXPOSE 8000
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["gunicorn", "--reload", "--workers=4", "--worker-tmp-dir", "/dev/shm", "--bind=0.0.0.0:80", "--chdir", "/app/khanetala", "khabetala.wsgi"]

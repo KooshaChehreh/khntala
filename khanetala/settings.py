@@ -147,14 +147,10 @@ REST_FRAMEWORK = {
         "rest_framework.parsers.FormParser",
         "rest_framework.parsers.MultiPartParser",
     ),
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'users.permissions.IsAuthenticatedWithToken',
-    # ],
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        "jwt_authentication.JWTAuthentication",
-    ]
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+    'users.permissions.IsAuthenticatedWithToken',
+]
 }
-
 
 # JWT Settings
 
