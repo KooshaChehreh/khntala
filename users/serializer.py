@@ -11,6 +11,7 @@ class UsersSerializer(serializers.ModelSerializer):
             "username",
             "phone",
             "password",
+            "gold_weight",
             "created_at",
             "updated_at",
             "suspended_at",

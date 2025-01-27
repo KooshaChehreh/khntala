@@ -19,7 +19,7 @@ class User(models.Model):
         validators=[phone_validator],
         verbose_name="تلفن همراه",
     )
-    gold_wight = models.DecimalField(max_digits=12, decimal_places=4, default=0.0)
+    gold_weight = models.DecimalField(max_digits=12, decimal_places=4, default=0.0)
     password = models.CharField(
         max_length=128,
         blank=True,
@@ -75,3 +75,8 @@ class User(models.Model):
         
     def is_suspended(self):
         return self.suspended_at is not None
+    
+    def check_gold_balance(self, amount):
+        if amount > self.gold_weight:
+            return False
+        return True

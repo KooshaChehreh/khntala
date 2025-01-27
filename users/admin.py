@@ -8,6 +8,7 @@ class UserAdmin(admin.ModelAdmin):
         "username",
         "phone",
         "password",
+        "gold_weight",
         "created_at",
         "updated_at",
         "suspended_at",
