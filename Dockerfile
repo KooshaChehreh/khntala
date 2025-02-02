@@ -16,6 +16,6 @@ RUN pip install --no-cache-dir -r requirements.txt
  
 COPY . /app
  
-EXPOSE 8000
+EXPOSE 80
 
 CMD ["gunicorn", "--reload", "--workers=4", "--worker-tmp-dir", "/dev/shm", "--bind=0.0.0.0:80", "--chdir", "/app/khanetala", "khabetala.wsgi"]
